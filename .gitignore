@@ -6,3 +6,7 @@
 /bin/Debug
 /.vs
 /Produire.Sensor.csproj.user
+/bin/Release/Windows.winmd
+/bin/Release/utopiat.Host.dll
+/bin/Release/utopiat.Control.dll
+/bin/Release/Produire.Core.dll
