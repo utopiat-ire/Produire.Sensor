@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using Windows.Devices.Sensors;
+using System.Threading.Tasks;
 
 namespace Produire.Sensor
 {
@@ -11,6 +12,9 @@ namespace Produire.Sensor
 	{
 		private Compass _compass;
 
+		/// <summary>
+		/// センサーから計測してその結果を返します。
+		/// </summary>
 		[自分で]
 		public 方位情報 計測()
 		{
@@ -22,6 +26,20 @@ namespace Produire.Sensor
 			}
 			else
 				return null;
+		}
+		/// <summary>
+		/// 測定に使用するセンサーをデバイスIDで選択します。
+		/// </summary>
+		[自分から]
+		public bool 選択(string ID)
+		{
+			Task<Compass> t1 = null;
+			Task.Run(() =>
+			{
+				t1 = Compass.FromIdAsync(ID).AsTask<Compass>();
+			}).Wait();
+			_compass = t1.Result;
+			return _compass != null;
 		}
 		public string デバイス名
 		{

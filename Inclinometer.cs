@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Drawing;
 using Windows.Devices.Sensors;
+using System.Threading.Tasks;
 
 namespace Produire.Sensor
 {
@@ -13,6 +14,9 @@ namespace Produire.Sensor
 	{
 		private Inclinometer _inclinometer;
 
+		/// <summary>
+		/// センサーから計測してその結果を返します。
+		/// </summary>
 		[自分で]
 		public 傾斜情報 計測()
 		{
@@ -24,6 +28,20 @@ namespace Produire.Sensor
 			}
 			else
 				return null;
+		}
+		/// <summary>
+		/// 測定に使用するセンサーをデバイスIDで選択します。
+		/// </summary>
+		[自分から]
+		public bool 選択(string ID)
+		{
+			Task<Inclinometer> t1 = null;
+			Task.Run(() =>
+			{
+				t1 = Inclinometer.FromIdAsync(ID).AsTask<Inclinometer>();
+			}).Wait();
+			_inclinometer = t1.Result;
+			return _inclinometer != null;
 		}
 		public string デバイス名
 		{
